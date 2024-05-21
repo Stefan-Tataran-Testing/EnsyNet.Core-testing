@@ -41,6 +41,7 @@ jobs:
           branch: auto/bump-nuget-v${{ env.nuget_version }}
           delete-branch: true
           title: '[AutoPR] Bump nuget version to v${{ env.nuget_version }}'
+          base: main
           labels: |
             nuget bump
             automated pr
