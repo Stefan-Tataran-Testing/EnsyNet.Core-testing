@@ -42,6 +42,7 @@ jobs:
           delete-branch: true
           title: '[AutoPR] Bump nuget version to v${{ env.nuget_version }}'
           base: main
+          token: ${{ secrets.GITHUB_TOKEN }}
           labels: |
             nuget bump
             automated pr
