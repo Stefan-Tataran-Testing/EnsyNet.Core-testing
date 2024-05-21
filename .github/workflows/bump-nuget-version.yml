@@ -19,11 +19,8 @@ jobs:
         id: nuget_version
         run: |
           title="${{ github.event.release.name }}"
-          regex=".*v([0-9]+\.[0-9]+\.[0-9]+)(?![\-0-9]).*"
 
-          [[ $title =~ $regex ]] || echo "No version could be found in release title."
-
-          version=${BASH_REMATCH[1]}
+          version=$( perl -ne 'if (/.*v([0-9]+\.[0-9]+\.[0-9]+)(?![\-0-9]).*/) { print $1 . "" }' <<< $title )
           if [[ -z $version ]]; then 
             exit 1
           fi
