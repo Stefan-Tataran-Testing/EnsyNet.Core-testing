@@ -1,0 +1,46 @@
+name: bump-nuget-version
+run-name: Ensy Net Core - Bump NuGet Version on Release
+
+on:
+  release:
+    types: [released]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get version from name
+        id: nuget_version
+        run: |
+          title='${{ github.event.release.name }}'
+          regex='.*v([0-9]+\.[0-9]\.[0-9]+).*'
+
+          [[ $title =~ $regex ]] || echo "No version could be found in release title."
+
+          version=${BASH_REMATCH[1]}
+          if [[ -z $version ]]; then 
+            exit 1
+          fi
+
+          echo "Found version: $version"
+          echo "nuget_version=$version" >> "$GITHUB_ENV"
+
+      - name: Create new branch
+        run: echo do stuff
+
+      - name: Modify version file
+        run: echo do stuff
+
+      - name: Commit and Push file change
+        run: echo do stuff
+
+      - name: Create NuGet Bump PR
+        run: gh pr create -B main -H branch_to_merge --title 'Bump NuGet version to ${{ env.nuget_version }}' --body 'Created by Github action for release ${{ github.event.release.name }}'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
